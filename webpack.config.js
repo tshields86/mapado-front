@@ -50,6 +50,7 @@ module.exports = {
     root: __dirname,
     alias: {
       Main: 'app/components/Main.js',
+      Map: 'app/components/Map.js',
       Navigation: 'app/components/Navigation.js',
       Welcome: 'app/components/Welcome.js',
       About: 'app/components/About.js',

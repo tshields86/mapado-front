@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, IndexLink } from 'react-router';
-import { Navbar, Header, Brand, Toggle, Collapse, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+import { Navbar, Header, Brand, Toggle, Collapse, Nav, NavItem, NavDropdown, MenuItem, FormGroup, FormControl, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
 class NaviBar extends Component {
@@ -10,19 +10,28 @@ class NaviBar extends Component {
         <Navbar inverse>
           <Navbar.Header>
             <Navbar.Brand>
-              <Link to={'/'}>Home</Link>
+              <Link to={'/'}>Mapado</Link>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav>
-              <LinkContainer to="/About">
+              <LinkContainer to="/about">
                 <NavItem eventKey={2} href="#">About</NavItem>
               </LinkContainer>
+              <NavDropdown eventKey={3} title="Tasks" id="basic-nav-dropdown">
+                <MenuItem eventKey={3.1}>Add Task</MenuItem>
+                <MenuItem divider />
+                <MenuItem eventKey={3.2}>View Tasks</MenuItem>
+              </NavDropdown>
             </Nav>
-            <Nav pullRight>
-              <NavItem eventKey={1} href="http://www.travis-shields.com" target="_blank">Travis Shields</NavItem>
-            </Nav>
+            <Navbar.Form pullRight>
+              <FormGroup>
+                <FormControl type="text" placeholder="Search Location" />
+              </FormGroup>
+              {' '}
+              <Button type="submit">Submit</Button>
+            </Navbar.Form>
           </Navbar.Collapse>
         </Navbar>
       </div>

@@ -2,7 +2,15 @@
 
 body {
   font-family: 'Inconsolata', 'Courier New', monospace;
-  background-image: linear-gradient(to bottom right, #d63c6b 0%, #F3F315 100%);
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+}
+
+.map {
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    z-index: -1;
+    top: -.01px; // makes map full screen w/o removing navbar margin-bottom
+}
+.back {
+  margin: 10px;
 }

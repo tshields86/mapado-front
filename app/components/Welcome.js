@@ -10,8 +10,8 @@ class Welcome extends Component {
         <Jumbotron>
           <h1>Mapado</h1>
           <p>A visual task manager for everyday use</p>
-          <Link to="/About">
-            <Button bsStyle="info" bsSize="large">Learn more</Button>
+          <Link to="/map">
+            <Button bsStyle="info" bsSize="large">Use</Button>
           </Link>
         </Jumbotron>
       </div>
