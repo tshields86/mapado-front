@@ -7,7 +7,7 @@ class About extends Component {
   render() {
     let list = ['React', 'Node', 'Express', 'Webpack', 'Bootstrap', 'Sass', 'Google Maps API'];
     let li = list.map(function(item) {
-      return <li>{item}</li>
+      return <li key={item}>{item}</li>
     });
     return (
       <div>
