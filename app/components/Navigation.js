@@ -20,9 +20,16 @@ class NaviBar extends Component {
                 <NavItem eventKey={2} href="#">About</NavItem>
               </LinkContainer>
               <NavDropdown eventKey={3} title="Tasks" id="basic-nav-dropdown">
-                <MenuItem eventKey={3.1}>Add Task</MenuItem>
+                <LinkContainer to="/add">
+                  <MenuItem eventKey={3.1}>Add Task</MenuItem>
+                </LinkContainer>
                 <MenuItem divider />
-                <MenuItem eventKey={3.2}>View Tasks</MenuItem>
+                <LinkContainer to="/tasks">
+                  <MenuItem eventKey={3.2}>View Tasks</MenuItem>
+                </LinkContainer>
+                <LinkContainer to="/">
+                  <MenuItem eventKey={3.3}>View Map</MenuItem>
+                </LinkContainer>
               </NavDropdown>
             </Nav>
             <Navbar.Form pullRight>

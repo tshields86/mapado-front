@@ -54,6 +54,10 @@ module.exports = {
       Navigation: 'app/components/Navigation.js',
       Welcome: 'app/components/Welcome.js',
       About: 'app/components/About.js',
+      ViewTasks: 'app/components/ViewTasks.js',
+      Task: 'app/components/Task.js',
+      AddTask: 'app/components/AddTask.js',
+      Form: 'app/components/Form.js',
       applicationStyles: 'app/styles/app.scss'
     },
     extensions: ['', '.js', '.jsx', '.json', '.scss']
