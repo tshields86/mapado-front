@@ -21,7 +21,7 @@ class EditTask extends Component {
     this.submit = this.submit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.checkValidation = this.checkValidation.bind(this);
-    // this.addTask = this.addTask.bind(this);
+    this.updateTask = this.updateTask.bind(this);
   }
   handleChange(e) {
     e.preventDefault();
@@ -34,27 +34,30 @@ class EditTask extends Component {
     if (this.state.task) this.setState({validation: 'success'});
     else this.setState({validation: 'error'});
   }
-  // axios post to the backend
-  // addTask() {
-  //   const taskData = {
-  //     task: this.state.task,
-  //     location: this.state.location,
-  //     date: this.state.date,
-  //     time: this.state.time,
-  //     category: this.state.category,
-  //     description: this.state.description
-  //   };
-  //   ajaxHelpers.addTask(taskData)
-  //   .then(function(response){
-  //     console.log('response:', response);
-  //   });
-  // }
+  // axios put to the backend
+  updateTask() {
+    const taskData = {
+      id: this.props.params.taskId,
+      update: {
+        task: this.state.task,
+        location: this.state.location,
+        date: this.state.date,
+        time: this.state.time,
+        category: this.state.category,
+        description: this.state.description
+      }
+    };
+    ajaxHelpers.updateTask(taskData)
+    .then(function(response){
+      console.log('response:', response);
+    });
+  }
   // submit button functionality
   submit() {
     this.checkValidation();
     if (this.state.task) {
-      // axios post
-      // this.addTask();
+      // axios put
+      this.updateTask();
       // invokes close after validating that there is a task and then sending current state of info in the form to the backend
       this.close();
     }
@@ -62,18 +65,24 @@ class EditTask extends Component {
   close() {
     this.setState({ showModal: false });
     setTimeout(() => {
-      browserHistory.push('/');
+      browserHistory.push('/tasks');
     }, 500);
   }
   // get call to backend for data
   componentWillMount() {
-  //   ajaxHelpers.getTasks()
-  //   .then((response) => {
-  //     console.log(response);
-  //     this.setState({
-  //       tasks: response.data.tasks
-  //     });
-  //   });
+    console.log('this.props.params.taskId:',this.props.params.taskId);
+    ajaxHelpers.getTask(this.props.params.taskId)
+    .then((response) => {
+      console.log(response);
+      this.setState({
+        task: response.data.task,
+        location: response.data.location,
+        date: response.data.date,
+        time: response.data.time,
+        category: response.data.category,
+        description: response.data.description
+      });
+    });
   }
   componentWillUnmount() {
     this.setState({ showModal: true });
