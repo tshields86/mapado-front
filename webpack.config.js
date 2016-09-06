@@ -57,7 +57,9 @@ module.exports = {
       ViewTasks: 'app/components/ViewTasks.js',
       Task: 'app/components/Task.js',
       AddTask: 'app/components/AddTask.js',
+      EditTask: 'app/components/EditTask.js',
       Form: 'app/components/Form.js',
+      ajaxHelpers: 'app/utils/ajaxHelpers.js',
       applicationStyles: 'app/styles/app.scss'
     },
     extensions: ['', '.js', '.jsx', '.json', '.scss']

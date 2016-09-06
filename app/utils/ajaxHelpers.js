@@ -1,21 +1,20 @@
 import axios from 'axios';
 
 module.exports = {
-  // getTacos: function(){
-  //   // all of YOUR route urls need to be updated for production
-  //   return axios.get('http://HEROKU_URL/api/tacos');
-  // },
-  // getTaco: function(){
-  //   return axios.get('http://HEROKU_URL/api/taco')
-  // },
-  // addTaco: function(taco){
-  //   return axios.post('http://HEROKU_URL/api/taco', taco);
-  // },
-  // deleteTaco: function(taco){
-  //   return axios.delete('http://HEROKU_URL/api/taco', taco);
-  // },
-  // updateTaco: function(taco){
-  //   return axios.put('http://HEROKU_URL/api/taco', taco);
-  // }
-
+  getTasks: function(){
+    // all of YOUR route urls need to be updated for production
+    return axios.get('http://localhost:3000/api/tasks');
+  },
+  getTask: function(task){
+    return axios.get('http://localhost:3000/api/task/' + task)
+  },
+  addTask: function(task){
+    return axios.post('http://localhost:3000/api/task', task);
+  },
+  deleteTask: function(task){
+    return axios.delete('http://localhost:3000/api/task/' + task);
+  },
+  updateTask: function(task){
+    return axios.put('http://localhost:3000/api/task', task);
+  }
 }
