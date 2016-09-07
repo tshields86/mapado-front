@@ -1,0 +1,23 @@
+$blue: #3f51b5;
+$red: red;
+$white: white;
+
+$marker-size: 40px;
+
+.marker {
+  position: absolute;
+  width: $marker-size;
+  height: $marker-size;
+  left: -$marker-size/2;
+  top: -$marker-size/2;
+  border: 5px solid $blue;
+  border-radius: $marker-size;
+  background-color: $red;
+  color: $white;
+  line-height: $marker-size;
+  vertical-align: middle;
+  text-align: center;
+  font-size: 16;
+  font-weight: bold;
+  padding: 4;
+}

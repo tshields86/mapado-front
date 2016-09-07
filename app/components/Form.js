@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Button, FormGroup, ControlLabel, FormControl, Feedback, HelpBlock } from 'react-bootstrap';
-
+import SearchBox from 'SearchBox';
 
 const Form = (props) => {
+
   return (
     <form>
       <FormGroup bsSize="large" validationState={props.info.validation}>
@@ -24,6 +25,7 @@ const Form = (props) => {
           onChange={props.handleChange}
           />
       </FormGroup>
+      {/*<SearchBox />*/}
       <FormGroup>
         <FormControl
           type="date"

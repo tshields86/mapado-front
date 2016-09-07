@@ -51,6 +51,11 @@ class AddTask extends Component {
   }
   // submit button functionality
   submit() {
+    // runs geogode on location, better use autocomplete
+    // ajaxHelpers.geoCode(this.state.location)
+    // .then((response) => {
+    //   console.log('GEOCODE response:',response);
+    // });
     this.checkValidation();
     if (this.state.task) {
       // axios post

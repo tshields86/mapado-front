@@ -59,6 +59,8 @@ module.exports = {
       AddTask: 'app/components/AddTask.js',
       EditTask: 'app/components/EditTask.js',
       Form: 'app/components/Form.js',
+      Marker: 'app/components/Marker.js',
+      SearchBox: 'app/components/SearchBox.js',
       ajaxHelpers: 'app/utils/ajaxHelpers.js',
       applicationStyles: 'app/styles/app.scss'
     },
