@@ -20,14 +20,23 @@ class AddTask extends Component {
     this.close = this.close.bind(this);
     this.submit = this.submit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleAutoChange = this.handleAutoChange.bind(this);
     this.checkValidation = this.checkValidation.bind(this);
     this.addTask = this.addTask.bind(this);
   }
   handleChange(e) {
-    e.preventDefault();
-    let nextState = {};
-    nextState[e.target.name] = e.target.value;
-    this.setState(nextState);
+   const { name, value } = e.currentTarget;
+   const nextState = {};
+   nextState[name] = value;
+   this.setState(nextState);
+  }
+  handleAutoChange() {
+    // this is called onBlur and allows to setState after autocomplete
+    setTimeout(_=>{
+      let autoLocation = document.getElementById('searchTextField').value;
+      console.log('autoLocation:',autoLocation);
+      this.setState({location: autoLocation});
+    },0);
   }
   // checks for validation of a task
   checkValidation() {
@@ -51,11 +60,6 @@ class AddTask extends Component {
   }
   // submit button functionality
   submit() {
-    // runs geogode on location, better use autocomplete
-    // ajaxHelpers.geoCode(this.state.location)
-    // .then((response) => {
-    //   console.log('GEOCODE response:',response);
-    // });
     this.checkValidation();
     if (this.state.task) {
       // axios post
@@ -82,7 +86,7 @@ class AddTask extends Component {
             <Modal.Title>New Task</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form handleChange={this.handleChange} info={this.state}/>
+            <Form handleChange={this.handleChange} handleAutoChange={this.handleAutoChange} info={this.state} />
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.submit}>Submit</Button>

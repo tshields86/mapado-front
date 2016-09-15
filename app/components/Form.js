@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, FormGroup, ControlLabel, FormControl, Feedback, HelpBlock } from 'react-bootstrap';
 import SearchBox from 'SearchBox';
+import Autocomplete from 'Autocomplete';
 
 const Form = (props) => {
 
@@ -16,7 +17,7 @@ const Form = (props) => {
           onChange={props.handleChange}
         />
       </FormGroup>
-      <FormGroup>
+      {/*<FormGroup>
         <FormControl
           type="text"
           name="location"
@@ -24,8 +25,11 @@ const Form = (props) => {
           placeholder="Location"
           onChange={props.handleChange}
           />
-      </FormGroup>
+      </FormGroup>*/}
       {/*<SearchBox />*/}
+      <FormGroup>
+        <Autocomplete handleChange={props.handleChange} handleAutoChange={props.handleAutoChange} info={props.info} />
+      </FormGroup>
       <FormGroup>
         <FormControl
           type="date"

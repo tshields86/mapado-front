@@ -14,3 +14,6 @@ body {
 .back {
   margin: 10px;
 }
+.pac-container {
+  z-index: 2000; // allows the autocomplete to display in the modal
+}
