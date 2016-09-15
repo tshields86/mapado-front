@@ -61,7 +61,6 @@ module.exports = {
       Form: 'app/components/Form.js',
       Marker: 'app/components/Marker.js',
       Autocomplete: 'app/components/Autocomplete.js',
-      SearchBox: 'app/components/SearchBox.js',
       ajaxHelpers: 'app/utils/ajaxHelpers.js',
       applicationStyles: 'app/styles/app.scss'
     },

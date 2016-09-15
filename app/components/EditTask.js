@@ -94,10 +94,8 @@ class EditTask extends Component {
   }
   // get call to backend for data
   componentWillMount() {
-    console.log('this.props.params.taskId:',this.props.params.taskId);
     ajaxHelpers.getTask(this.props.params.taskId)
     .then((response) => {
-      console.log(response);
       this.setState({
         task: response.data.task,
         location: response.data.location,
