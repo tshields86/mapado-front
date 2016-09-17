@@ -17,7 +17,10 @@ class AddTask extends Component {
       category: '',
       description: '',
       lat: '',
-      lng: ''
+      lng: '',
+      address: '',
+      phone: '',
+      website: ''
     };
     this.close = this.close.bind(this);
     this.submit = this.submit.bind(this);
@@ -32,23 +35,16 @@ class AddTask extends Component {
    nextState[name] = value;
    this.setState(nextState);
   }
-  handleAutoChange() {
-    // this is called onBlur and allows to setState after autocomplete
-    setTimeout(_=>{
-      let autoLocation = document.getElementById('searchTextField').value;
-      // console.log('autoLocation in AddTask:',autoLocation);
-      this.setState({location: autoLocation});
-
-      ajaxHelpers.geoCode(autoLocation) // set the lat and lng for defined locations
-      .then((response)=>{
-        // console.log(`response from geocode:`, response);
-        let { lat, lng } = response.data.results[0].geometry.location;
-        // console.log("inside ajax geoCode: lat", lat, "lng", lng);
-        if (!lat && !lng) this.setState({lat: '', lng: ''})
-        else this.setState({lat: lat, lng: lng});
-      })
-
-    },0);
+  handleAutoChange(place) {
+    // console.log(`From place obj - lat: ${place.geometry.location.lat()}, lng: ${place.geometry.location.lng()}`);
+    this.setState({
+      location: place.name ? place.name : place.formatted_address,
+      address: place.formatted_address ? place.formatted_address : '',
+      lat: place.geometry.location.lat() ? place.geometry.location.lat() : '',
+      lng: place.geometry.location.lng() ? place.geometry.location.lng() : '',
+      phone: place.formatted_phone_number ? place.formatted_phone_number : '',
+      website: place.website ? place.website : ''
+    })
   }
   // checks for validation of a task
   checkValidation() {
@@ -57,7 +53,7 @@ class AddTask extends Component {
   }
   // axios post to the backend
   addTask() {
-    let { task, location, date, time, category, description, lat, lng } = this.state;
+    let { task, location, date, time, category, description, lat, lng, address, phone, website  } = this.state;
     const taskData = {
       task: task,
       location: location,
@@ -66,7 +62,10 @@ class AddTask extends Component {
       category: category,
       description: description,
       lat: lat,
-      lng: lng
+      lng: lng,
+      address: address,
+      phone: phone,
+      website: website
     };
     ajaxHelpers.addTask(taskData)
     .then(function(response){

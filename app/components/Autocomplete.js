@@ -23,11 +23,12 @@ const Autocomplete = (props) => {
       autocomplete.setBounds(circle.getBounds());
     });
   }
-  // use below if want to get the place object from autocomplete can also use geocode in parent components
+  // calls handleAutoChange and passes place obj as argument
   autocomplete.addListener('place_changed', function() {
-    // let place = autocomplete.getPlace();
+    let place = autocomplete.getPlace();
     // console.log('place object in Autocomplete:', place);
     // console.log(`lat: ${place.geometry.location.lat()}, lng: ${place.geometry.location.lng()}`);
+    props.handleAutoChange(place)
   });
 
   return (
@@ -39,7 +40,6 @@ const Autocomplete = (props) => {
         value={props.info.location}
         placeholder="Location"
         onChange={props.handleChange}
-        onBlur={props.handleAutoChange} // this calls fxn in AddTask w/ setTimeout to setState after autocomplete
       />
     </div>
   )

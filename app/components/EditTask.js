@@ -32,23 +32,16 @@ class EditTask extends Component {
     nextState[name] = value;
     this.setState(nextState);
   }
-  handleAutoChange() {
-    // this is called onBlur and allows to setState after autocomplete
-    setTimeout(_=>{
-      let autoLocation = document.getElementById('searchTextField').value;
-      // console.log('autoLocation in AddTask:',autoLocation);
-      this.setState({location: autoLocation});
-
-      ajaxHelpers.geoCode(autoLocation) // set the lat and lng for defined locations
-      .then((response)=>{
-        // console.log(`response from geocode:`, response);
-        let { lat, lng } = response.data.results[0].geometry.location;
-        // console.log("inside ajax geoCode: lat", lat, "lng", lng);
-        if (!lat && !lng) this.setState({lat: '', lng: ''})
-        else this.setState({lat: lat, lng: lng});
-      })
-
-    },0);
+  handleAutoChange(place) {
+    // console.log(`From place obj - lat: ${place.geometry.location.lat()}, lng: ${place.geometry.location.lng()}`);
+    this.setState({
+      location: place.name ? place.name : place.formatted_address,
+      address: place.formatted_address ? place.formatted_address : '',
+      lat: place.geometry.location.lat() ? place.geometry.location.lat() : '',
+      lng: place.geometry.location.lng() ? place.geometry.location.lng() : '',
+      phone: place.formatted_phone_number ? place.formatted_phone_number : '',
+      website: place.website ? place.website : ''
+    })
   }
   // checks for validation of a task
   checkValidation() {
@@ -57,7 +50,7 @@ class EditTask extends Component {
   }
   // axios put to the backend
   updateTask() {
-    let { task, location, date, time, category, description, lat, lng } = this.state;
+    let { task, location, date, time, category, description, lat, lng, address, phone, website  } = this.state;
     const taskData = {
       id: this.props.params.taskId,
       update: {
@@ -68,7 +61,10 @@ class EditTask extends Component {
         category: category,
         description: description,
         lat: lat,
-        lng: lng
+        lng: lng,
+        address: address,
+        phone: phone,
+        website: website
       }
     };
     ajaxHelpers.updateTask(taskData)
@@ -96,13 +92,19 @@ class EditTask extends Component {
   componentWillMount() {
     ajaxHelpers.getTask(this.props.params.taskId)
     .then((response) => {
+      let { task, location, date, time, category, description, lat, lng, address, phone, website } = response.data;
       this.setState({
-        task: response.data.task,
-        location: response.data.location,
-        date: response.data.date,
-        time: response.data.time,
-        category: response.data.category,
-        description: response.data.description
+        task: task,
+        location: location,
+        date: date,
+        time: time,
+        category: category,
+        description: description,
+        lat: lat,
+        lng: lng,
+        address: address,
+        phone: phone,
+        website: website
       });
     });
   }

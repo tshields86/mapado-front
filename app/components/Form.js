@@ -6,7 +6,7 @@ const Form = (props) => {
   return (
     <form>
       <FormGroup bsSize="large" validationState={props.info.validation}>
-        <ControlLabel>Task Name</ControlLabel>
+        {/*<ControlLabel>Task Name</ControlLabel>*/}
         <FormControl
           type="text"
           name="task"
@@ -44,11 +44,12 @@ const Form = (props) => {
           <option disabled="true">Category</option>
           <option value="Personal">Personal</option>
           <option value="Work">Work</option>
+          <option value="School">School</option>
           <option value="Other">Other</option>
         </FormControl>
       </FormGroup>
       <FormGroup controlId="formControlsTextarea">
-        <ControlLabel>Description</ControlLabel>
+        {/*<ControlLabel>Description</ControlLabel>*/}
         <FormControl
           componentClass="textarea"
           name="description"

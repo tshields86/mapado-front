@@ -4,6 +4,9 @@ body {
   font-family: 'Inconsolata', 'Courier New', monospace;
 }
 
+.task-location {
+  margin-top: 10px;
+}
 .map {
     height: 100vh;
     width: 100vw;
@@ -16,4 +19,8 @@ body {
 }
 .pac-container {
   z-index: 2000; // allows the autocomplete to display in the modal
+}
+.loading {
+  padding-top: 10vh;
+  padding-left: 10vw;
 }
