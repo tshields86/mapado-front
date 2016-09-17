@@ -3,7 +3,7 @@ import { browserHistory } from 'react-router';
 import { Button, Panel, PanelGroup, ButtonGroup } from 'react-bootstrap';
 import ajaxHelpers from 'ajaxHelpers';
 
-export default class Task extends React.Component {
+export default class Task extends Component {
   constructor(props) {
     super(props);
     this.state = {activeKey: '1'};

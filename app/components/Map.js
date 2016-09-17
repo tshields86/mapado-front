@@ -57,7 +57,7 @@ export default class Map extends Component {
     console.log("SETTING ALL MARKERS");
     let markers = [];
     array.forEach((item, index)=>{
-      let { task, lat, lng, category} = item;
+      let { task, lat, lng, category } = item;
       console.log("Task:",task,"lat:",lat,"lng:",lng);
       // console.log(`Task: ${task}, lat: ${lat}, lng: ${lng}`);
       if (item.lat && item.lng) {
@@ -84,7 +84,8 @@ export default class Map extends Component {
         onClick={this._onClick}
         onChange={this._onChange}
         bootstrapURLKeys={{
-          key: process.env.GAPI_KEY
+          // key: process.env.GAPI_KEY
+          key: `${process.env.GAPI_KEY}&libraries=places`
         }}
         defaultCenter={center}
         defaultZoom={zoom}
