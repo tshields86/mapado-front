@@ -11,6 +11,7 @@ export default class Task extends React.Component {
     this.panelCategory = this.panelCategory.bind(this);
     this.updateTask = this.updateTask.bind(this);
     this.deleteTask = this.deleteTask.bind(this);
+    this.convertDate = this.convertDate.bind(this);
     this.convertTime = this.convertTime.bind(this);
     this.sortTasks = this.sortTasks.bind(this);
     this.buildTaskList = this.buildTaskList.bind(this);
@@ -45,6 +46,11 @@ export default class Task extends React.Component {
       console.log('response:',response);
     });
   }
+  convertDate(date) {
+    let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      date = date.split('-');
+      return new Date(parseInt(date[0]), parseInt(date[1]), parseInt(date[2])).toLocaleDateString('en-US', options);
+  }
   convertTime(time) {
     if (!time) return '';
     time = time.split(':');
@@ -57,7 +63,7 @@ export default class Task extends React.Component {
     return timeValue;
   }
   sortTasks(array) {
-    function convertDate(task) {
+    function convert(task) {
       let { date, time } = task;
       if (time) {
         time = time.split(':'); // if time exists split into an array
@@ -70,18 +76,17 @@ export default class Task extends React.Component {
       } else return new Date(3000, 1, 1, parseInt(hours), parseInt(minutes)); // if no date set, push towards end of list and sort time if it exists
     }
     array.sort((a,b)=>{
-      return convertDate(a) - convertDate(b); // returns the sorted array
+      return convert(a) - convert(b); // returns the sorted array
     });
   }
   buildTaskList(tasksArray) {
     this.sortTasks(tasksArray); // calling this function first sorts the array
-
     return tasksArray.map((task, index) => {
       return (
         <Panel key={index} header={task.task} bsStyle={this.panelCategory(task.category)} eventKey={index}>
           <h3 className="task-location">{task.location ? task.location : ''}</h3>
           <h5>{task.address ? task.address : ''}</h5>
-          <h4>{task.date ? task.date : ''}</h4>
+          <h4>{task.date ? this.convertDate(task.date) : ''}</h4>
           <h4>{task.time ? this.convertTime(task.time) : ''}</h4>
           <h4>{task.description ? task.description : ''}</h4>
           <h5>{task.phone ? task.phone : ''}</h5>
