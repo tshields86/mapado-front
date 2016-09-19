@@ -2,13 +2,10 @@ import React, {Component} from 'react';
 import Navigation from 'Navigation';
 import Map from 'Map';
 
-require('../config/env.js')
-
 export default class Main extends Component {
   constructor() {
     super();
   }
-
   render() {
     return (
         <div>

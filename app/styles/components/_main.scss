@@ -7,12 +7,19 @@ body {
 .task-location {
   margin-top: 10px;
 }
-.map {
-    height: 100vh;
-    width: 100vw;
-    position: fixed;
-    z-index: -1;
-    top: -.01px; // makes map full screen w/o removing navbar margin-bottom
+// .map {
+//     height: 100vh;
+//     width: 100vw;
+//     position: fixed;
+//     z-index: -1;
+//     top: -.01px; // makes map full screen w/o removing navbar margin-bottom
+// }
+#map {
+      height: 100vh;
+      width: 100vw;
+      position: fixed;
+      // z-index: 100;
+      top: -40px; // makes map full screen w/o removing navbar margin-bottom
 }
 .back {
   margin: 10px;
@@ -20,7 +27,23 @@ body {
 .pac-container {
   z-index: 2000; // allows the autocomplete to display in the modal
 }
-.loading {
-  padding-top: 10vh;
-  padding-left: 10vw;
+
+$loader-size: 150px;
+.loader {
+  position: absolute;
+  top: 50vh;
+  left: 50vw;
+  margin-top: -$loader-size/2;
+  margin-left: -$loader-size/2;
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid #3498db;
+  border-bottom: 16px solid #3498db;
+  border-radius: 50%;
+  width: $loader-size;
+  height: $loader-size;
+  animation: spin 2s linear infinite;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
