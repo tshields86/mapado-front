@@ -7,19 +7,23 @@ body {
 .task-location {
   margin-top: 10px;
 }
-// .map {
-//     height: 100vh;
-//     width: 100vw;
-//     position: fixed;
-//     z-index: -1;
-//     top: -.01px; // makes map full screen w/o removing navbar margin-bottom
-// }
+html, body {
+    height: 100vh; // set parent components to full screen to be able to use calc() in map
+}
 #map {
+      height: calc(100vh - 50px);
       height: 100vh;
       width: 100vw;
       position: fixed;
       // z-index: 100;
-      top: -40px; // makes map full screen w/o removing navbar margin-bottom
+}
+.navbar {
+  border: 0;
+  margin-bottom: 0;
+  border-radius: 0;
+}
+.about-body {
+  text-align: center;
 }
 .back {
   margin: 10px;
@@ -27,7 +31,6 @@ body {
 .pac-container {
   z-index: 2000; // allows the autocomplete to display in the modal
 }
-
 $loader-size: 150px;
 .loader {
   position: absolute;

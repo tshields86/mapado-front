@@ -31,7 +31,6 @@ class ViewTasks extends Component {
   }
   componentWillUnmount() {
     this.setState({ showModal: true });
-    // clear out form here
   }
   render() {
     return (

@@ -2,13 +2,17 @@ import React, {PropTypes, Component} from 'react';
 import GoogleMap from 'google-map-react';
 import Marker from 'Marker';
 import ajaxHelpers from 'ajaxHelpers';
+import _ from 'lodash';
 require('../config/env.js');
 
 export default class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      init: true,
+      initMap: true,
+      initMarkers: true,
+      setMarker: false,
+      markerTarget: null,
       center: null,
       zoom: 15,
       tasks: []
@@ -16,10 +20,7 @@ export default class Map extends Component {
     this.addScript = this.addScript.bind(this);
     this.loadScript = this.loadScript.bind(this);
     this.initialize = this.initialize.bind(this);
-    this._onClick = this._onClick.bind(this);
-    this._onChange = this._onChange.bind(this);
     this.createMapOptions = this.createMapOptions.bind(this);
-    // this.setMarkers = this.setMarkers.bind(this);
   }
   addScript(url, callback) {
     let script = document.createElement( 'script' );
@@ -28,8 +29,20 @@ export default class Map extends Component {
     script.src = url;
     document.body.appendChild( script );
   }
-  componentWillMount() {
-    // initially load in all tasks from db to set markers
+  loadScript(){
+    // load in the google maps api script with key and places library
+    let url = 'https://maps.googleapis.com/maps/api/js?libraries=places&key=';
+    this.addScript(`${url}${process.env.GAPI_KEY}`, this.initialize);
+  }
+  initialize() {
+    // callback to set new map after script loads
+    this.map = new google.maps.Map(this.refs.map, {
+      zoom: this.state.zoom,
+      center: this.state.center
+    });
+    this.setState({ initMap: false });
+  }
+  componentDidMount(){
     ajaxHelpers.getTasks()
     .then((response) => {
       // find current location and set to center
@@ -44,69 +57,89 @@ export default class Map extends Component {
       });
     });
   }
+  componentWillReceiveProps() {
+    // load in all tasks from db to set markers with
+    ajaxHelpers.getTasks()
+    .then((response) => {
+      if (!_.isEqual(this.state.tasks, response.data.tasks)) { // compare if there are changes to tasks
+        let targetTask;
+        let newTask = _.filter(response.data.tasks, (obj)=>{ return !_.find(this.state.tasks, obj);}); // find if there has been an new task added
+        let editTask = _.filter(this.state.tasks, (obj)=>{ return !_.find(response.data.tasks, obj);}); // find if there is an edited or deleted task
+        if (newTask.length === 1) targetTask = newTask[0]._id; // if new task set as target
+        else if (editTask.length === 1) targetTask = editTask[0]._id; // if edit or delete task set as target
+
+        this.setState({ // if changes to tasks, setState and change setMarker value to true to notify that markers need to be checked and updated
+          tasks: response.data.tasks,
+          markerTarget: targetTask,
+          setMarker: true
+        });
+      }
+    });
+  }
   componentDidUpdate(){
-    console.log("state in componentdidupdate",this.state);
-    // once component updates with center, load script and initialize map
-    if (this.state.init) {
+    if (this.state.initMap) { // once component updates with center, load script and initialize map
       let url = 'https://maps.googleapis.com/maps/api/js?libraries=places&key=';
-      this.addScript(`${url}${process.env.GAPI_KEY}`, this.initialize);
-      // this.setState({ init: false });
+      this.addScript(`${url}${process.env.GAPI_KEY}`, this.initialize); // initialize callback
       this.markers = []; // set markers as an empty array only once during map initialization
     }
-    if (!this.state.init) { // if map has been initialized
-      console.log(this.state.init);
-      console.log("this.map",this.map);
-      // this.markers = [];
-      this.markers.forEach((marker)=>{
-        marker.setMap(null) // remove all markers to refresh of all tasks in case one is deleted or changed
-      })
-      this.markers.length = 0; // set array length to 0
+
+    if (!this.state.initMap && this.state.initMarkers) { // if map has been initialized, set markers for first time
       this.state.tasks.forEach((item, index)=> {
-        let { task, lat, lng, category } = item;
-          if (item.lat && item.lng) {
-            let position = {
-              lat: lat, lng: lng
-            }
+        let { task, lat, lng, category, _id } = item;
+          if (lat && lng) { // checks if they have coordinates before setting
             let marker = new google.maps.Marker({
-              position: position,
-              map: this.map
+              position: { lat: lat, lng: lng },
+              map: this.map,
+              _id: _id,
+              task: task
             })
             this.markers.push(marker)
           }
       })
-      console.log("Markers:",this.markers);
+      this.setState({ initMarkers: false }); // after markers initialized set initMarkers to false
     }
 
-  }
-  loadScript(){
-    // load in the google maps api script with key and places library
-    let url = 'https://maps.googleapis.com/maps/api/js?libraries=places&key=';
-    this.addScript(`${url}${process.env.GAPI_KEY}`, this.initialize);
-  }
-  initialize() {
-    // callback to set new map after script loads
-    this.map = new google.maps.Map(this.refs.map, {
-      zoom: this.state.zoom,
-      center: this.state.center
-    });
-    this.setState({ init: false });
-  }
-  componentWillReceiveProps() {
-    console.log("componentWillReceiveProps");
-    // load in all tasks from db to set markers
-    ajaxHelpers.getTasks()
-    .then((response) => {
+    if (!this.state.initMarkers && this.state.setMarker) { // if markers have been initialized and there is a change in tasks, change a marker
+      let findTask = this.state.tasks.find((task, index)=>{ // returns a task from this.state.tasks if it has same _id as markerTarget in order to determine whether to edit/add or delete
+        return task._id === this.state.markerTarget;
+      })
+      if (findTask) { // if findTask - either edit or delete
+        let findMarker = this.markers.find((marker)=> { return marker._id == this.state.markerTarget}); // returns the marker from this.markers to determine whether to edit or add
+        if (findMarker) { // edit marker
+          this.markers.find((marker, index, array)=>{
+            if (marker._id == this.state.markerTarget) {
+              let { task, lat, lng, category, _id } = findTask;
+              marker.task = task; // updates the markers task name
+              let newMarker = new google.maps.LatLng(lat, lng); // sets the position for the edited coordinates
+              marker.setPosition(newMarker); // changes the marker's position
+              array.splice(index, 1, marker); // removes marker from array of this.markers and replaces with edited marker
+            }
+          })
+        } else { // add marker
+          let { task, lat, lng, category, _id } = findTask;
+            if (lat && lng) { // checks if they have coordinates before setting
+              let marker = new google.maps.Marker({
+                position: { lat: lat, lng: lng },
+                map: this.map,
+                _id: _id,
+                task: task
+              })
+              this.markers.push(marker) // adds marker to array of this.markers
+            }
+        }
+      } else if (!findTask) { // delete marker
+        this.markers.find((marker, index, array)=>{
+          if (marker._id == this.state.markerTarget) {
+            marker.setMap(null); // removes marker from map
+            array.splice(index, 1); // remove marker from this.markers
+          }
+        })
+      }
       this.setState({
-        tasks: response.data.tasks
+        setMarker: false,
+        markerTarget: null
       });
-    });
-  }
-  // click anywhere on map and it will log the info
-  _onClick({x, y, lat, lng, event}) {
-    // console.log(x, y, lat, lng, event);
-  }
-  _onChange({center, zoom, bounds, marginBounds}) {
-    // console.log("center:",center, "zoom:",zoom, "bounds:",bounds, "marginBounds:",marginBounds);
+    }
   }
   createMapOptions(maps) {
     return {
@@ -116,22 +149,6 @@ export default class Map extends Component {
       styles: [{ stylers: [{ 'saturation': 25 }, { 'gamma': 0.4 }, { 'lightness': 0 }, { 'visibility': 'on' }] }]
     }
   }
-  // setMarkers(array){
-  //   console.log("+++++++++++++++++SETTING ALL MARKERS+++++++++++++++++");
-  //   let markers = [];
-  //   array.forEach((item, index)=> {
-  //     let { task, lat, lng, category } = item;
-  //       if (item.lat && item.lng) {
-  //         let position = {
-  //           lat: lat, lng: lng
-  //         }
-  //         markers.push(
-  //           <Marker {...position} className={category} text={''} key={index} />
-  //         )
-  //       }
-  //   })
-  //   return markers;
-  // }
   render() {
     const { center, zoom } = this.state
     const currentLocation = center;
@@ -141,20 +158,7 @@ export default class Map extends Component {
       );
     } else {
       return (
-        // <GoogleMap
-        // onClick={this._onClick}
-        // onChange={this._onChange}
-        // bootstrapURLKeys={{
-        //   key: process.env.GAPI_KEY,
-        //   libraries: 'places'
-        // }}
-        // options={this.createMapOptions}
-        // defaultCenter={center}
-        // defaultZoom={zoom}>
-        // <Marker {...center} className="Current" text={'ME'}/>
-        // {this.setMarkers(this.state.tasks)}
-        // </GoogleMap>
-        <div id="map" ref="map">This is the map</div>
+        <div id="map" ref="map"></div>
       );
     }
   }
