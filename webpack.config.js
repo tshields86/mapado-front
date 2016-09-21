@@ -8,13 +8,12 @@ const PATHS = {
 };
 
 module.exports = {
+  devtool: 'eval',
   entry: {
-    javascript: PATHS.app,
-    html: PATHS.html
+    javascript: PATHS.app
   },
   output: {
     path: PATHS.dist,
-    publicPath: '/',
     filename: 'bundle.js'
   },
   devServer: {
@@ -50,6 +49,7 @@ module.exports = {
     root: __dirname,
     alias: {
       Main: 'app/components/Main.js',
+      MapContainer: 'app/components/MapContainer.js',
       Map: 'app/components/Map.js',
       Navigation: 'app/components/Navigation.js',
       Welcome: 'app/components/Welcome.js',
@@ -61,7 +61,10 @@ module.exports = {
       Form: 'app/components/Form.js',
       Marker: 'app/components/Marker.js',
       Autocomplete: 'app/components/Autocomplete.js',
+      GoogleApiComponent: 'app/components/GoogleApiComponent.js',
       ajaxHelpers: 'app/utils/ajaxHelpers.js',
+      GoogleApi: 'app/utils/GoogleApi.js',
+      ScriptCache: 'app/utils/ScriptCache.js',
       applicationStyles: 'app/styles/app.scss'
     },
     extensions: ['', '.js', '.jsx', '.json', '.scss']

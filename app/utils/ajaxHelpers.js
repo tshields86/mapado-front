@@ -5,24 +5,18 @@ const mapadoURL = 'https://mapado-api.herokuapp.com/';
 
 module.exports = {
   getTasks: function(){
-    // all of YOUR route urls need to be updated for production
-    return axios.get(mapadoURL + 'api/tasks');
     return axios.get(`${mapadoURL}api/tasks`);
   },
   getTask: function(task){
-    // return axios.get(mapadoURL + 'api/task/' + task);
     return axios.get(`${mapadoURL}api/task/${task}`);
   },
   addTask: function(task){
-    // return axios.post(mapadoURL + 'api/task', task);
     return axios.post(`${mapadoURL}api/task`, task);
   },
   deleteTask: function(task){
-    // return axios.delete(mapadoURL + 'api/task/' + task);
     return axios.delete(`${mapadoURL}api/task/${task}`);
   },
   updateTask: function(task){
-    // return axios.put(mapadoURL + 'api/task', task);
     return axios.put(`${mapadoURL}api/task`, task);
   },
   // getTasks: function(){

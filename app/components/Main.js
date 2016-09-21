@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Navigation from 'Navigation';
 import Map from 'Map';
+import MapContainer from 'MapContainer';
 
 export default class Main extends Component {
   constructor() {
@@ -12,9 +13,7 @@ export default class Main extends Component {
           <div className="navbar">
             <Navigation />
           </div>
-          <div className="map">
-            <Map />
-          </div>
+          <MapContainer />
           <div className="container text-center">
             {this.props.children}
           </div>
