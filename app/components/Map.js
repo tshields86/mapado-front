@@ -20,7 +20,6 @@ export default class Map extends Component {
     };
     this.loadMap = this.loadMap.bind(this);
   }
-  //     styles: [{ stylers: [{ 'saturation': 25 }, { 'gamma': 0.4 }, { 'lightness': 0 }, { 'visibility': 'on' }] }]
   componentDidMount() {
     ajaxHelpers.getTasks()
     .then((response) => {
@@ -119,7 +118,8 @@ export default class Map extends Component {
       let { center, zoom } = this.state;
       const mapConfig = Object.assign({}, {
         center: center,
-        zoom: zoom
+        zoom: zoom,
+        styles: [{ stylers: [{ 'saturation': 25 }, { 'gamma': 0.4 }, { 'lightness': 0 }, { 'visibility': 'on' }] }]
       })
       this.map = new maps.Map(this.refs.map, mapConfig);
       this.markers = []; // set markers as an empty array while map is loading
