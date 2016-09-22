@@ -36,6 +36,7 @@ module.exports = {
   //   return axios.put('http://localhost:3000/api/task', task);
   // },
   geoCode: function(address){
-    return axios.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + address + '&key=' + process.env.GAPI_KEY);
+    // return axios.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + address + '&key=' + process.env.GAPI_KEY);
+    return axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.GAPI_KEY}`);
   }
 }
