@@ -19,6 +19,7 @@ export default class Map extends Component {
       tasks: []
     };
     this.loadMap = this.loadMap.bind(this);
+    this.pinSymbol = this.pinSymbol.bind(this);
   }
   componentDidMount() {
     ajaxHelpers.getTasks()
@@ -62,7 +63,8 @@ export default class Map extends Component {
           if (lat && lng) { // checks if they have coordinates before setting
             let marker = new google.maps.Marker({
               position: { lat: lat, lng: lng },
-              map: this.map, _id: _id, task: task })
+              map: this.map, _id: _id, task: task,
+              icon: this.pinSymbol(category), animation: google.maps.Animation.DROP });
             this.markers.push(marker)
           }
       })
@@ -78,8 +80,11 @@ export default class Map extends Component {
             if (marker._id == this.state.markerTarget) {
               let { task, lat, lng, category, _id } = findTask;
               marker.task = task; // updates the markers task name
-              let newMarker = new google.maps.LatLng(lat, lng); // sets the position for the edited coordinates
-              marker.setPosition(newMarker); // changes the marker's position
+              let newSymbol = this.pinSymbol(category);
+              marker.setIcon(newSymbol);
+              console.log('Edit marker:',marker);
+              let newLocation = new google.maps.LatLng(lat, lng); // sets the position for the edited coordinates
+              marker.setPosition(newLocation); // changes the marker's position
               array.splice(index, 1, marker); // removes marker from array of this.markers and replaces with edited marker
             }
           })
@@ -88,10 +93,8 @@ export default class Map extends Component {
             if (lat && lng) { // checks if they have coordinates before setting
               let marker = new google.maps.Marker({
                 position: { lat: lat, lng: lng },
-                map: this.map,
-                _id: _id,
-                task: task
-              })
+                map: this.map, _id: _id, task: task,
+                icon: this.pinSymbol(category), animation: google.maps.Animation.DROP });
               this.markers.push(marker) // adds marker to array of this.markers
             }
         }
@@ -122,8 +125,44 @@ export default class Map extends Component {
         styles: [{ stylers: [{ 'saturation': 25 }, { 'gamma': 0.4 }, { 'lightness': 0 }, { 'visibility': 'on' }] }]
       })
       this.map = new maps.Map(this.refs.map, mapConfig);
+      let goldStar = {
+        path: 'M 125,5 155,90 245,90 175,145 200,230 125,180 50,230 75,145 5,90 95,90 z',
+        fillColor: 'yellow',
+        fillOpacity: 0.8,
+        scale: .2,
+        strokeColor: 'gold',
+        strokeWeight: 2,
+        anchor: new google.maps.Point(125, 125)
+      };
+      let marker = new google.maps.Marker({ // set current location
+        position: center, map: this.map, name: "Current Location", animation: google.maps.Animation.DROP, icon: goldStar });
       this.markers = []; // set markers as an empty array while map is loading
     }
+  }
+  pinSymbol(category) {
+    function fillPicker(category){
+      if (category === 'Personal') return '#bce8f1';
+      else if (category === 'Work') return '#faebcc';
+      else if (category === 'School') return '#ebccd1';
+      else if (category === 'Other') return '#ddd';
+      else return '#ddd';
+    }
+    function strokePicker(category){
+      if (category === 'Personal') return '#31708f';
+      else if (category === 'Work') return '#8a6d3b';
+      else if (category === 'School') return '#a94442';
+      else if (category === 'Other') return '#333333';
+      else return '#333333';
+    }
+    return {
+        path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z',
+        fillColor: fillPicker(category),
+        fillOpacity: 1,
+        strokeColor: strokePicker(category),
+        strokeWeight: 2,
+        scale: 1,
+        labelOrigin: new google.maps.Point(0,-29)
+    };
   }
   render() {
     const { center } = this.state;

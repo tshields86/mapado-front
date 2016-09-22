@@ -2,39 +2,16 @@
 
 body {
   font-family: 'Inconsolata', 'Courier New', monospace;
+  height: 100vh; // set parent components to full screen to be able to use calc() in map
 }
 
-.task-location {
-  margin-top: 10px;
-}
-html, body {
-    height: 100vh; // set parent components to full screen to be able to use calc() in map
-}
-#map {
-      height: calc(100vh - 50px);
-      width: 100vw;
-      position: fixed;
-      // z-index: 100;
-}
-// .map-container {
-//   height: calc(100vh - 50px);
-//   width: 100vw;
-//   position: fixed;
-// }
 .navbar {
   border: 0;
   margin-bottom: 0;
   border-radius: 0;
 }
-.about-body {
-  text-align: center;
-}
-.back {
-  margin: 10px;
-}
-.pac-container {
-  z-index: 2000; // allows the autocomplete to display in the modal
-}
+
+// loading spinner
 $loader-size: 150px;
 .loader {
   position: absolute;

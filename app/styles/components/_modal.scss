@@ -1,0 +1,30 @@
+.modal-content {
+  background-color: rgba(34,34,34,0.75);
+  color: #fff;
+}
+.modal-header {
+  background-color: #fff;
+  color: #333;
+  border-radius: 4px 4px 0 0;
+}
+.modal-footer {
+  background-color: #fff;
+  color: #333;
+  border-radius: 0 0 4px 4px;
+}
+.panel-body {
+  color: #333;
+}
+.form-control {
+  border: 2.5px solid rgba(204,204,204,0.3);
+}
+
+.about-body {
+  text-align: center;
+}
+.back {
+  margin: 10px;
+}
+.pac-container {
+  z-index: 2000; // allows the autocomplete to display in the modal
+}
