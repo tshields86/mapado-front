@@ -131,7 +131,7 @@ export default class Map extends Component {
         fillOpacity: 0.8,
         scale: .2,
         strokeColor: 'gold',
-        strokeWeight: 2,
+        strokeWeight: 2.5,
         anchor: new google.maps.Point(125, 125)
       };
       let marker = new google.maps.Marker({ // set current location
@@ -159,7 +159,7 @@ export default class Map extends Component {
         fillColor: fillPicker(category),
         fillOpacity: 1,
         strokeColor: strokePicker(category),
-        strokeWeight: 2,
+        strokeWeight: 3.5,
         scale: 1,
         labelOrigin: new google.maps.Point(0,-29)
     };

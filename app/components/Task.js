@@ -49,7 +49,7 @@ export default class Task extends Component {
   convertDate(date) {
     let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
       date = date.split('-');
-      return new Date(parseInt(date[0]), parseInt(date[1]), parseInt(date[2])).toLocaleDateString('en-US', options);
+      return new Date(parseInt(date[0]), parseInt(date[1] -1), parseInt(date[2])).toLocaleDateString('en-US', options);
   }
   convertTime(time) {
     if (!time) return '';
