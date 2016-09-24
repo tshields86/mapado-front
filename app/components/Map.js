@@ -2,6 +2,7 @@ import React, {PropTypes, Component} from 'react';
 import ReactDOM from 'react-dom';
 
 import ajaxHelpers from 'ajaxHelpers';
+import { convertDate, convertTime } from 'Tools';
 import _ from 'lodash';
 import GoogleApiComponent from 'GoogleApiComponent';
 require('../config/env.js');
@@ -20,6 +21,7 @@ export default class Map extends Component {
     };
     this.loadMap = this.loadMap.bind(this);
     this.pinSymbol = this.pinSymbol.bind(this);
+    this.infoWindow = this.infoWindow.bind(this);
   }
   componentDidMount() {
     ajaxHelpers.getTasks()
@@ -65,6 +67,8 @@ export default class Map extends Component {
               position: { lat: lat, lng: lng },
               map: this.map, _id: _id, task: task,
               icon: this.pinSymbol(category), animation: google.maps.Animation.DROP });
+            let infowindow = this.infoWindow(item);
+            marker.addListener('click',_=> infowindow.open(this.map, marker));
             this.markers.push(marker)
           }
       })
@@ -74,27 +78,39 @@ export default class Map extends Component {
       // returns a task from this.state.tasks if it has same _id as markerTarget in order to determine whether to edit/add or delete
       let findTask = this.state.tasks.find((task, index)=>{ return task._id === this.state.markerTarget; })
       if (findTask) { // if findTask - either edit or delete
+        let { task, lat, lng, category, _id } = findTask;
         let findMarker = this.markers.find((marker)=> { return marker._id == this.state.markerTarget}); // returns the marker from this.markers to determine whether to edit or add
         if (findMarker) { // edit marker
           this.markers.find((marker, index, array)=>{
             if (marker._id == this.state.markerTarget) {
-              let { task, lat, lng, category, _id } = findTask;
-              marker.task = task; // updates the markers task name
-              let newSymbol = this.pinSymbol(category);
-              marker.setIcon(newSymbol);
-              console.log('Edit marker:',marker);
-              let newLocation = new google.maps.LatLng(lat, lng); // sets the position for the edited coordinates
-              marker.setPosition(newLocation); // changes the marker's position
-              array.splice(index, 1, marker); // removes marker from array of this.markers and replaces with edited marker
+              // below will replace the replace the existing marker, but unable to unattach the infowindow and set new content
+              // marker.task = task; // updates the markers task name
+              // let newSymbol = this.pinSymbol(category);
+              // marker.setIcon(newSymbol);
+              // let newLocation = new google.maps.LatLng(lat, lng); // sets the position for the edited coordinates
+              // marker.setPosition(newLocation); // changes the marker's position
+              //
+              // array.splice(index, 1, marker); // removes marker from array of this.markers and replaces with edited marker
+
+              marker.setMap(null); // removes marker from map
+              array.splice(index, 1); // remove marker from this.markers
             }
           })
+          let marker = new google.maps.Marker({ // need to set new marker instead of replace exisiting one to replace the infowindow attached to the event listener
+            position: { lat: lat, lng: lng },
+            map: this.map, _id: _id, task: task,
+            icon: this.pinSymbol(category) });
+            let infowindow = this.infoWindow(findTask);
+            marker.addListener('click',_=> infowindow.open(this.map, marker));
+            this.markers.push(marker) // adds marker to array of this.markers
         } else { // add marker
-          let { task, lat, lng, category, _id } = findTask;
             if (lat && lng) { // checks if they have coordinates before setting
               let marker = new google.maps.Marker({
                 position: { lat: lat, lng: lng },
                 map: this.map, _id: _id, task: task,
                 icon: this.pinSymbol(category), animation: google.maps.Animation.DROP });
+                let infowindow = this.infoWindow(findTask);
+                marker.addListener('click',_=> infowindow.open(this.map, marker));
               this.markers.push(marker) // adds marker to array of this.markers
             }
         }
@@ -163,6 +179,37 @@ export default class Map extends Component {
         scale: 1,
         labelOrigin: new google.maps.Point(0,-29)
     };
+  }
+  infoWindow(info){
+    let { _id, address, category, date, description, time, location, task, phone, website } = info;
+    function infoContent() {
+      return (
+        // `<div class="info-window"> // formatted to look like google maps style
+        // <div class="title">${task}</div>
+        // <div>${location ? location : ''}</div>
+        // <div>${address ? address : ''}</div>
+        // <div>${date ? convertDate(date) : ''}</div>
+        // <div>${time ? convertTime(time) : ''}</div>
+        // <div>${description ? description : ''}</div>
+        // <div>${phone ? phone : ''}</div>
+        // <div><a href=${website} target='_blank'>Website</a></div>
+        // </div>`
+        `<div class="info-window">
+        <h4><strong>${task}</strong></h4>
+        <h3 class="task-location">${location ? location : ''}</h3>
+        <h5>${address ? address : ''}</h5>
+        <h4>${date ? convertDate(date) : ''}</h4>
+        <h4>${time ? convertTime(time) : ''}</h4>
+        <h4>${description ? description : ''}</h4>
+        <h5>${phone ? phone : ''}</h5>
+        <h5><a href=${website} target='_blank'>Website</a></h5>
+        </div>`
+      )
+    }
+    let infowindow = new google.maps.InfoWindow({
+      content: infoContent()
+    });
+    return infowindow
   }
   render() {
     const { center } = this.state;

@@ -4,10 +4,28 @@
       position: fixed;
       // z-index: 100;
 }
+.poi-info-window div, a { // info window for google maps
+  font-family: $font !important;
+}
+.gm-style {
+  font-family: $font !important;
+}
 .gm-svpc {
   display: none; // hides the little person icon at bottom right of google map
 }
-// .gm-style-mtc div, .gmnoprint div { // styles map options same as Nav
-//   background-color: #222 !important;
-//   color: #9d9d9d !important;
-// }
+.gm-style-mtc div, .gmnoprint div {
+  // background-color: #222 !important; // styles map options same as Nav
+  // color: #9d9d9d !important; // styles map options same as Nav
+  font-family: $font !important;
+}
+
+.info-window { // info window for tasks
+  font-family: $font;
+  font-size: 13px;
+  .title {
+    font-size: 14px;
+  }
+  a {
+    color: #427fed;
+  }
+}

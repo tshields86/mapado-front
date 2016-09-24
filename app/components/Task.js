@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import { Button, Panel, PanelGroup, ButtonGroup } from 'react-bootstrap';
 import ajaxHelpers from 'ajaxHelpers';
+import { convertDate, convertTime } from 'Tools';
 
 export default class Task extends Component {
   constructor(props) {
@@ -11,8 +12,8 @@ export default class Task extends Component {
     this.panelCategory = this.panelCategory.bind(this);
     this.updateTask = this.updateTask.bind(this);
     this.deleteTask = this.deleteTask.bind(this);
-    this.convertDate = this.convertDate.bind(this);
-    this.convertTime = this.convertTime.bind(this);
+    // this.convertDate = this.convertDate.bind(this);
+    // this.convertTime = this.convertTime.bind(this);
     this.sortTasks = this.sortTasks.bind(this);
     this.buildTaskList = this.buildTaskList.bind(this);
   }
@@ -46,22 +47,6 @@ export default class Task extends Component {
       console.log('response:',response);
     });
   }
-  convertDate(date) {
-    let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-      date = date.split('-');
-      return new Date(parseInt(date[0]), parseInt(date[1] -1), parseInt(date[2])).toLocaleDateString('en-US', options);
-  }
-  convertTime(time) {
-    if (!time) return '';
-    time = time.split(':');
-    let hours = parseInt(time[0]),
-        minutes = parseInt(time[1]);
-    // calculate
-    let timeValue = (hours > 12) ? hours - 12 : hours; // get hours
-    timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;  // get minutes
-    timeValue += (hours >= 12) ? " PM" : " AM";  // get AM/PM
-    return timeValue;
-  }
   sortTasks(array) {
     function convert(task) {
       let { date, time } = task;
@@ -86,11 +71,11 @@ export default class Task extends Component {
         <Panel key={index} header={task.task} bsStyle={this.panelCategory(task.category)} eventKey={index}>
           <h3 className="task-location">{task.location ? task.location : ''}</h3>
           <h5>{task.address ? task.address : ''}</h5>
-          <h4>{task.date ? this.convertDate(task.date) : ''}</h4>
-          <h4>{task.time ? this.convertTime(task.time) : ''}</h4>
+          <h4>{task.date ? convertDate(task.date) : ''}</h4>
+          <h4>{task.time ? convertTime(task.time) : ''}</h4>
           <h4>{task.description ? task.description : ''}</h4>
           <h5>{task.phone ? task.phone : ''}</h5>
-          <h5><a href={task.website} target='_blank'>{task.website ? task.website : ''}</a></h5>
+          <h5><a href={task.website} target='_blank'>Website</a></h5>
           <ButtonGroup>
             <Button id={task._id} onClick={this.deleteTask} bsSize="small">Done</Button>
             <Button id={task._id} onClick={this.updateTask} bsSize="small">Edit</Button>

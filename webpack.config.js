@@ -63,6 +63,7 @@ module.exports = {
       Autocomplete: 'app/components/Autocomplete.js',
       GoogleApiComponent: 'app/components/GoogleApiComponent.js',
       ajaxHelpers: 'app/utils/ajaxHelpers.js',
+      Tools: 'app/utils/Tools.js',
       GoogleApi: 'app/utils/GoogleApi.js',
       ScriptCache: 'app/utils/ScriptCache.js',
       applicationStyles: 'app/styles/app.scss'

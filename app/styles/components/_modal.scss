@@ -28,3 +28,7 @@
 .pac-container {
   z-index: 2000; // allows the autocomplete to display in the modal
 }
+
+.task-location {
+  margin-top: 0; // reduce margin between task name and location
+}

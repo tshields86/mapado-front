@@ -1,7 +1,5 @@
-@import url(https://fonts.googleapis.com/css?family=Inconsolata);
-
 body {
-  font-family: 'Inconsolata', 'Courier New', monospace;
+  font-family: $font;
   height: 100vh; // set parent components to full screen to be able to use calc() in map
 }
 
@@ -19,9 +17,9 @@ $loader-size: 150px;
   left: 50vw;
   margin-top: -$loader-size/2;
   margin-left: -$loader-size/2;
-  border: 16px solid #f3f3f3;
-  border-top: 16px solid #3498db;
-  border-bottom: 16px solid #3498db;
+  border: 16px solid $loader-gray;
+  border-top: 16px solid $loader-blue;
+  border-bottom: 16px solid $loader-blue;
   border-radius: 50%;
   width: $loader-size;
   height: $loader-size;
