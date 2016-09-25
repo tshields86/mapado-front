@@ -30,7 +30,7 @@ class About extends Component {
       <div>
         <Modal bsSize="large" show={this.state.showModal} onHide={this.close}>
           <Modal.Header closeButton>
-            <Modal.Title>Mapado</Modal.Title>
+            <Modal.Title>About</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <div className="about-body">

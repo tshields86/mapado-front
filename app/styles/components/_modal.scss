@@ -19,16 +19,26 @@
   border: 2.5px solid rgba(204,204,204,0.3);
 }
 
+//About
 .about-body {
   text-align: center;
 }
 .back {
   margin: 10px;
 }
+
+//Autocomplete
 .pac-container {
   z-index: 2000; // allows the autocomplete to display in the modal
 }
 
+// ViewTasks
+.panel-group {
+  max-height: calc(100vh - 208px);
+  overflow: scroll;
+  margin-bottom: 0;
+}
+// Task
 .task-location {
   margin-top: 0; // reduce margin between task name and location
 }

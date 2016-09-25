@@ -152,6 +152,10 @@ export default class Map extends Component {
       };
       let marker = new google.maps.Marker({ // set current location
         position: center, map: this.map, name: "Current Location", animation: google.maps.Animation.DROP, icon: goldStar });
+      let infowindow = new google.maps.InfoWindow({
+        content: `<div class="info-window"><div class="title">You are here</div></div>`
+      });
+      marker.addListener('click',_=> infowindow.open(this.map, marker));
       this.markers = []; // set markers as an empty array while map is loading
     }
   }
@@ -195,7 +199,7 @@ export default class Map extends Component {
         // <div><a href=${website} target='_blank'>Website</a></div>
         // </div>`
         `<div class="info-window">
-        <h4><strong>${task}</strong></h4>
+        <h4 class="task-name">${task}</h4>
         <h3 class="task-location">${location ? location : ''}</h3>
         <h5>${address ? address : ''}</h5>
         <h4>${date ? convertDate(date) : ''}</h4>
