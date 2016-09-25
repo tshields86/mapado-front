@@ -15,8 +15,14 @@
 }
 .gm-style-mtc div, .gmnoprint div {
   // background-color: #222 !important; // styles map options same as Nav
+  background-color: rgba(255,255,255,0.15) !important; // makes button background more transparent, optimizes view on mobile
+
   // color: #9d9d9d !important; // styles map options same as Nav
   font-family: $font !important;
+}
+.gm-style-cc {
+  // opacity: 0;
+  display: none; // hides the cc at bottom right
 }
 
 .info-window { // info window for tasks
@@ -26,8 +32,27 @@
     font-size: 14px;
   }
   .task-name {
-    text-decoration: underline;
-    // font-weight: bold;
+    text-align: center;
+    .Personal {
+      background-color: $personal;
+      border: 2px solid $personal-border;
+      border-radius: 2px;
+    }
+    .Work {
+      background-color: $work;
+      border: 2px solid $work-border;
+      border-radius: 2px;
+    }
+    .School {
+      background-color: $school;
+      border: 2px solid $school-border;
+      border-radius: 2px;
+    }
+    .Other {
+      background-color: $other;
+      border: 2px solid $other-border;
+      border-radius: 2px;
+    }
   }
   a {
     color: #427fed;

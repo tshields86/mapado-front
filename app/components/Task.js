@@ -12,8 +12,6 @@ export default class Task extends Component {
     this.panelCategory = this.panelCategory.bind(this);
     this.updateTask = this.updateTask.bind(this);
     this.deleteTask = this.deleteTask.bind(this);
-    // this.convertDate = this.convertDate.bind(this);
-    // this.convertTime = this.convertTime.bind(this);
     this.sortTasks = this.sortTasks.bind(this);
     this.buildTaskList = this.buildTaskList.bind(this);
   }

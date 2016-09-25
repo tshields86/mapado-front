@@ -199,7 +199,7 @@ export default class Map extends Component {
         // <div><a href=${website} target='_blank'>Website</a></div>
         // </div>`
         `<div class="info-window">
-        <h4 class="task-name">${task}</h4>
+        <h4 class="task-name"><div class="${category ? category : 'Other'}">${task}</div></h4>
         <h3 class="task-location">${location ? location : ''}</h3>
         <h5>${address ? address : ''}</h5>
         <h4>${date ? convertDate(date) : ''}</h4>
@@ -211,7 +211,8 @@ export default class Map extends Component {
       )
     }
     let infowindow = new google.maps.InfoWindow({
-      content: infoContent()
+      content: infoContent(),
+      maxWidth: 300
     });
     return infowindow
   }
