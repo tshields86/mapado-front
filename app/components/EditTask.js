@@ -33,7 +33,6 @@ class EditTask extends Component {
     this.setState(nextState);
   }
   handleAutoChange(place) {
-    // console.log(`From place obj - lat: ${place.geometry.location.lat()}, lng: ${place.geometry.location.lng()}`);
     this.setState({
       location: place.name ? place.name : place.formatted_address,
       address: place.formatted_address ? place.formatted_address : '',
@@ -69,17 +68,13 @@ class EditTask extends Component {
     };
     ajaxHelpers.updateTask(taskData)
     .then(function(response){
-      console.log('response:', response);
     });
   }
-  // submit button functionality
-  submit() {
+  submit() {   // submit button functionality
     this.checkValidation();
     if (this.state.task) {
-      // axios put
-      this.updateTask();
-      // invokes close after validating that there is a task and then sending current state of info in the form to the backend
-      this.close();
+      this.updateTask(); // axios put
+      this.close(); // invokes close after validating that there is a task and then sending current state of info in the form to the backend
     }
   }
   close() {
@@ -88,8 +83,8 @@ class EditTask extends Component {
       browserHistory.push('/tasks');
     }, 500);
   }
-  // get call to backend for data
-  componentWillMount() {
+
+  componentWillMount() { // get call to backend for data
     ajaxHelpers.getTask(this.props.params.taskId)
     .then((response) => {
       let { task, location, date, time, category, description, lat, lng, address, phone, website } = response.data;
@@ -110,7 +105,6 @@ class EditTask extends Component {
   }
   componentWillUnmount() {
     this.setState({ showModal: true });
-    // clear out form here
   }
   render() {
     return (

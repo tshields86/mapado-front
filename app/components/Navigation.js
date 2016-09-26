@@ -6,9 +6,40 @@ import { LinkContainer } from 'react-router-bootstrap';
 class NaviBar extends Component {
   constructor() {
     super()
-    this.state = { expanded: false };
+    this.state = {
+      expanded: false,
+      init: true
+    };
     this.toggleExpanded = this.toggleExpanded.bind(this);
     this.onClickLink = this.onClickLink.bind(this);
+    this.autocomplete = {};
+  }
+  componentDidUpdate() {
+    if (this.props.google && this.state.init) {
+      let input = document.getElementById('search'),
+      options = {
+        types: ['geocode', 'establishment']
+      };
+      this.autocomplete = new google.maps.places.Autocomplete(input, options);
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position)=> {
+          let geolocation = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          let circle = new google.maps.Circle({
+            center: geolocation,
+            radius: position.coords.accuracy
+          });
+          this.autocomplete.setBounds(circle.getBounds());
+        });
+      }
+      this.autocomplete.addListener('place_changed', ()=> {
+        let place = this.autocomplete.getPlace();
+        this.props.handleAutoChange(place)
+      });
+      this.setState({ init: false })
+    } // end of loading autocomplete
   }
   toggleExpanded(expanded) {
     this.setState({ expanded: expanded});
@@ -47,10 +78,11 @@ class NaviBar extends Component {
           </Nav>
           <Navbar.Form pullRight>
             <FormGroup>
-              <FormControl type="text" placeholder="Search Location" />
+              <FormControl id="search" type="text" placeholder="Search Location"
+              name="searchValue" value={this.props.data.searchValue} onChange={this.props.handleChange} />
             </FormGroup>
             {' '}
-            <Button type="submit">Submit</Button>
+            <Button type="submit" onClick={this.props.handleSubmit}>Submit</Button>
           </Navbar.Form>
         </Navbar.Collapse>
       </Navbar>

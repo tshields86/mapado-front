@@ -127,9 +127,20 @@ export default class Map extends Component {
         markerTarget: null
       });
     }
+    if (this.props.container.search) { // only run if a search was submitted
+      let { geometry } = this.props.container;
+      if (geometry.viewport) { // set by viewport
+        this.map.fitBounds(geometry.viewport);
+        this.map.setZoom(16);
+      } else { // set by coordinates
+        this.map.setCenter(geometry.location);
+        this.map.setZoom(16);
+      }
+      this.props.endSearch(); // switch search to false
+    }
   }
   loadMap() {
-    if (this.props && this.props.google && this.state.center) {
+    if (this.props.google && this.state.center) {
       // google is available
       const {google} = this.props;
       const maps = google.maps;
@@ -188,16 +199,6 @@ export default class Map extends Component {
     let { _id, address, category, date, description, time, location, task, phone, website } = info;
     function infoContent() {
       return (
-        // `<div class="info-window"> // formatted to look like google maps style
-        // <div class="title">${task}</div>
-        // <div>${location ? location : ''}</div>
-        // <div>${address ? address : ''}</div>
-        // <div>${date ? convertDate(date) : ''}</div>
-        // <div>${time ? convertTime(time) : ''}</div>
-        // <div>${description ? description : ''}</div>
-        // <div>${phone ? phone : ''}</div>
-        // <div><a href=${website} target='_blank'>Website</a></div>
-        // </div>`
         `<div class="info-window">
         <h4 class="task-name"><div class="${category ? category : 'Other'}">${task}</div></h4>
         <h3 class="task-location">${location ? location : ''}</h3>
@@ -206,7 +207,7 @@ export default class Map extends Component {
         <h4>${time ? convertTime(time) : ''}</h4>
         <h4>${description ? description : ''}</h4>
         <h5>${phone ? phone : ''}</h5>
-        <h5><a href=${website} target='_blank'>Website</a></h5>
+        <h5><a href=${website} target="_blank">${website ? 'Website' : ''}</a></h5>
         </div>`
       )
     }

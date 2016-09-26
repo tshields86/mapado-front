@@ -42,30 +42,11 @@ class About extends Component {
               </ul>
               <h3><strong><a className="website" href="http://www.travis-shields.com" target="_blank">Travis Shields</a></strong></h3>
             </div>
-
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.close}>Close</Button>
           </Modal.Footer>
         </Modal>
-
-
-
-
-        {/*<Jumbotron>
-          <h1>Mapado</h1>
-          <p>A visual task manager for everyday use</p>
-          <h2>Technologies</h2>
-          <ul className="list-unstyled">
-            {li}
-          </ul>
-          <Link to="/">
-            <Button bsStyle="info" bsSize="large" className="back">Back</Button>
-          </Link>
-          <p>
-            <a href="http://www.travis-shields.com" target="_blank">Travis Shields</a>
-          </p>
-        </Jumbotron>*/}
       </div>
     );
   }

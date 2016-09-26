@@ -42,7 +42,6 @@ export default class Task extends Component {
     // delete the task
     ajaxHelpers.deleteTask(e.target.id)
     .then(function(response) {
-      console.log('response:',response);
     });
   }
   sortTasks(array) {
@@ -73,7 +72,7 @@ export default class Task extends Component {
           <h4>{task.time ? convertTime(task.time) : ''}</h4>
           <h4>{task.description ? task.description : ''}</h4>
           <h5>{task.phone ? task.phone : ''}</h5>
-          <h5><a href={task.website} target='_blank'>Website</a></h5>
+          <h5><a href={task.website} target='_blank'>{task.website ? 'Website' : ''}</a></h5>
           <ButtonGroup>
             <Button id={task._id} onClick={this.deleteTask} bsSize="small">Done</Button>
             <Button id={task._id} onClick={this.updateTask} bsSize="small">Edit</Button>

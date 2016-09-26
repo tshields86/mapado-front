@@ -49,7 +49,7 @@ module.exports = {
     root: __dirname,
     alias: {
       Main: 'app/components/Main.js',
-      MapContainer: 'app/components/MapContainer.js',
+      Container: 'app/components/Container.js',
       Map: 'app/components/Map.js',
       Navigation: 'app/components/Navigation.js',
       Welcome: 'app/components/Welcome.js',

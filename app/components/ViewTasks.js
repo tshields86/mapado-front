@@ -23,7 +23,6 @@ class ViewTasks extends Component {
   componentWillMount() {
     ajaxHelpers.getTasks()
     .then((response) => {
-      console.log(response);
       this.setState({
         tasks: response.data.tasks
       });

@@ -26,8 +26,6 @@ const Autocomplete = (props) => {
   // calls handleAutoChange and passes place obj as argument
   autocomplete.addListener('place_changed', function() {
     let place = autocomplete.getPlace();
-    // console.log('place object in Autocomplete:', place);
-    // console.log(`lat: ${place.geometry.location.lat()}, lng: ${place.geometry.location.lng()}`);
     props.handleAutoChange(place)
   });
 
